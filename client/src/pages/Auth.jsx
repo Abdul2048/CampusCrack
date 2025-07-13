@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -25,7 +26,13 @@ const Auth = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+
       const data = await res.json();
+
+      if (data.completedQuestions) {
+        localStorage.setItem("completedQuestions", JSON.stringify(data.completedQuestions));
+      }
+
       alert(data.message || (isLogin ? "Logged in!" : "Registered!"));
     } catch (err) {
       console.error(err);
@@ -34,14 +41,21 @@ const Auth = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-[80vh]">
-      <form
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-black via-gray-900 to-green-950 text-green-400">
+      <motion.form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded shadow w-full max-w-md space-y-4 fade-in"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6 }}
+        className="bg-black border border-green-800/50 p-8 rounded-2xl shadow-green-500/30 shadow-lg w-full max-w-md space-y-4"
       >
-        <h2 className="text-2xl font-bold text-center">
-          {isLogin ? "Login" : "Register"}
-        </h2>
+        <motion.h2
+          className="text-3xl font-bold text-center bg-gradient-to-r from-green-400 to-emerald-300 text-transparent bg-clip-text drop-shadow"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          {isLogin ? "Welcome Back" : "Create Account"}
+        </motion.h2>
 
         {!isLogin && (
           <input
@@ -50,7 +64,7 @@ const Auth = () => {
             placeholder="Name"
             value={form.name}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
+            className="w-full bg-gray-900 border border-green-700/50 p-2 rounded text-green-300 placeholder-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
             required
           />
         )}
@@ -61,7 +75,7 @@ const Auth = () => {
           placeholder="Email"
           value={form.email}
           onChange={handleChange}
-          className="w-full border p-2 rounded"
+          className="w-full bg-gray-900 border border-green-700/50 p-2 rounded text-green-300 placeholder-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
           required
         />
 
@@ -71,28 +85,28 @@ const Auth = () => {
           placeholder="Password"
           value={form.password}
           onChange={handleChange}
-          className="w-full border p-2 rounded"
+          className="w-full bg-gray-900 border border-green-700/50 p-2 rounded text-green-300 placeholder-green-500 focus:outline-none focus:ring-2 focus:ring-green-500"
           required
         />
 
         <button
           type="submit"
-          className="bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700"
+          className="bg-green-600 hover:bg-green-700 transition text-black font-bold py-2 w-full rounded shadow-md"
         >
           {isLogin ? "Login" : "Register"}
         </button>
 
-        <p className="text-center text-sm text-gray-600">
+        <p className="text-center text-sm text-green-400">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
             type="button"
             onClick={toggleMode}
-            className="text-blue-600 hover:underline font-medium"
+            className="text-emerald-300 hover:underline font-semibold"
           >
             {isLogin ? "Register" : "Login"}
           </button>
         </p>
-      </form>
+      </motion.form>
     </div>
   );
 };
