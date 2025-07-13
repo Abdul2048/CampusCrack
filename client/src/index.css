@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@keyframes matrix {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+.animate-matrix {
+  animation: matrix 60s linear infinite;
+}
+
+.drop-shadow-glow {
+  filter: drop-shadow(0 0 6px rgba(0, 255, 0, 0.7));
+}
+
+
